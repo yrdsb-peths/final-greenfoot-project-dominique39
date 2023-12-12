@@ -13,7 +13,7 @@ public class WorldwCursor extends World
     
     public WorldwCursor(GreenfootImage bg)
     {    
-        super(1600, 900, 1, false);
+        super(1500, 900, 1, false);
         cursor = new Cursor();
         addObject(cursor,0,0);
         setBackground(bg);
