@@ -7,6 +7,7 @@ public class Level extends WorldwCursor
 {
     Button homeBut;
     Button pauseBut;
+    ScreenMover scrnMover;
     Player p1;
     Player p2;
     Key key;
@@ -20,6 +21,9 @@ public class Level extends WorldwCursor
 
         pauseBut = new Button(pause,"pause");
         addObject(pauseBut,1425,75);
+        
+        scrnMover = new ScreenMover();
+        addObject(scrnMover, 0, 0);
 
         p1 = new Player("p1","a","d","w");
         addObject(p1,100,730);
@@ -56,7 +60,7 @@ public class Level extends WorldwCursor
     private void loadObj(String obj,int[] data){        
         switch(obj){
             case "key":
-                key = new Key(50,90);
+                key = new Key();
                 addObject(key,data[0],data[1]);
                 break;
             case "floor":
@@ -64,6 +68,10 @@ public class Level extends WorldwCursor
                 addObject(floor.get(floor.size()-1),data[0],data[1]);
                 break;
         }
+    }
+    
+    public void act(){
+        
     }
 
     private void backMainScrn(){
@@ -85,6 +93,7 @@ public class Level extends WorldwCursor
         p2 = null;
         key = null;
         floor = null;
+        scrnMover = null;
     }
 
     public void keyFollow(Player player){

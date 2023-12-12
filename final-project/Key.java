@@ -5,9 +5,9 @@ public class Key extends NonObstructables
     private boolean follow;
     private Player player;
 
-    public Key(int width, int height){
+    public Key(){
         GreenfootImage img = new GreenfootImage("objects/key.png");
-        img.scale(width, height);
+        img.scale(50, 90);
         setImage(img);
     }
 
