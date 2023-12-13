@@ -71,7 +71,20 @@ public class Level extends WorldwCursor
     }
     
     public void act(){
-        
+        if(scrnMover.getX() != getWidth()/2){
+            List<Actor> allObjs = getObjects(null);
+            if(scrnMover.getX() > getWidth()/2){
+                for(int i = 0; i < allObjs.size(); i++){
+                    Actor temp = allObjs.get(i);
+                    temp.setLocation(temp.getX()-2,temp.getY());
+                }
+            }else{
+                for(int i = 0; i < allObjs.size(); i++){
+                    Actor temp = allObjs.get(i);
+                    temp.setLocation(temp.getX()+2,temp.getY());
+                }
+            }
+        }
     }
 
     private void backMainScrn(){
