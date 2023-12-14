@@ -18,7 +18,7 @@ public class LvSelection extends WorldwCursor
         lvButtons.add(new Button(toLv5,"lv5"));
 
         for(int i = 0; i < numLevels; i++){
-            addObject(lvButtons.get(i), 300+(getWidth()-600)/(numLevels+1)*(i+1), getHeight()/2);
+            addObject(lvButtons.get(i), 100+(getWidth()-200)/(numLevels+1)*(i+1), getHeight()/2);
         }
     }
 

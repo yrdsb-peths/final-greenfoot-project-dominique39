@@ -6,7 +6,6 @@ import java.util.*;
 public class Level extends WorldwCursor
 {
     Button homeBut;
-    Button pauseBut;
     ScreenMover scrnMover;
     Player p1;
     Player p2;
@@ -19,17 +18,14 @@ public class Level extends WorldwCursor
         homeBut = new Button(backMainScrn,"home");
         addObject(homeBut,70,70);
 
-        pauseBut = new Button(pause,"pause");
-        addObject(pauseBut,1425,75);
-        
         scrnMover = new ScreenMover();
         addObject(scrnMover, 0, 0);
 
         p1 = new Player("p1","a","d","w");
-        addObject(p1,100,730);
+        addObject(p1,getWidth()/10,getHeight()-170);
 
         p2 = new Player("p2","left","right","up");
-        addObject(p2,200,730);
+        addObject(p2,getWidth()/10*2,getHeight()-170);
 
         loadLevel(lv);
     }
@@ -69,21 +65,24 @@ public class Level extends WorldwCursor
                 break;
         }
     }
-    
+
     public void act(){
         if(scrnMover.getX() != getWidth()/2){
-            List<Actor> allObjs = getObjects(null);
+            List<Obstructables> obstructables = getObjects(Obstructables.class);
+            List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
             int moveConst = 0;
             if(scrnMover.getX() > getWidth()/2){
-                moveConst = (scrnMover.getX() - getWidth()/2)/100*-1;
-            }else{
-                moveConst = (getWidth()/2 - scrnMover.getX())/100;
+                moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
             }
-            
-            for(int i = 0; i < allObjs.size(); i++){
-                    Actor temp = allObjs.get(i);
-                    temp.setLocation(temp.getX()+moveConst,temp.getY());
-                }
+
+            for(int i = 0; i < obstructables.size(); i++){
+                Actor temp = obstructables.get(i);
+                temp.setLocation(temp.getX()+moveConst,temp.getY());
+            }
+            for(int i = 0; i < nonObstructables.size(); i++){
+                Actor temp = nonObstructables.get(i);
+                temp.setLocation(temp.getX()+moveConst,temp.getY());
+            }
         }
     }
 
@@ -101,7 +100,6 @@ public class Level extends WorldwCursor
 
     private void clearObjs(){
         homeBut = null;
-        pauseBut = null;
         p1 = null;
         p2 = null;
         key = null;
@@ -115,5 +113,4 @@ public class Level extends WorldwCursor
     }
 
     private Clickable backMainScrn = () -> backMainScrn();
-    private Clickable pause = () -> pause();
 }
