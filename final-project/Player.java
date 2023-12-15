@@ -64,29 +64,23 @@ public class Player extends Obstructables
             animate();
             moveDirection = facing;
         }
-        
+
         //move player accordingly
         setLocation(getX()+(moveDirection*4), getY());
         //revert to original position if character at world edge
         if(getX() <= playerWidth/2 || getX() >= 1000-playerWidth/2){
             setLocation(getX()-moveDirection*4, getY());
         }
-        
+
         //obstructables collision
-        if(getOneIntersectingObject(Obstructables.class) != null){
-            Actor temp = getOneIntersectingObject(Obstructables.class);
-            int tempWidth = temp.getImage().getWidth();
-            if(getX() >= temp.getX()-tempWidth || getX() <= temp.getX()+tempWidth){
-                setLocation(getX()-moveDirection*4, getY());
-            }
-        }
-        
-        //player collision
-        if(getOneIntersectingObject(Player.class) != null){
-            Actor temp = getOneIntersectingObject(Player.class);
-            int tempWidth = temp.getImage().getWidth();
-            if(getX() >= temp.getX()-tempWidth || getX() <= temp.getX()+tempWidth){
-                setLocation(getX()-moveDirection*4, getY());
+        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                int tempHeight = temp.getImage().getHeight();
+                if(getY() >= temp.getY()-tempHeight+5 && getY() <= temp.getY()+tempHeight-5){
+                    setLocation(getX()-moveDirection*4, getY());
+                }
             }
         }
     }
