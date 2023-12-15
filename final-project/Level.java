@@ -71,7 +71,7 @@ public class Level extends WorldwCursor
             List<Obstructables> obstructables = getObjects(Obstructables.class);
             List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
             int moveConst = 0;
-            if(scrnMover.getX() > getWidth()/2){
+            if((p1.getX() > 40 && p2.getX() > 40) && scrnMover.getX() > getWidth()/2){
                 moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
             }
 
