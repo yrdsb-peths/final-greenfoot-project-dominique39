@@ -92,12 +92,6 @@ public class Level extends WorldwCursor
         Greenfoot.setWorld(world);
     }
 
-    private void pause(){
-        clearObjs();
-        Pause world = new Pause(this);
-        Greenfoot.setWorld(world);
-    }
-
     private void clearObjs(){
         homeBut = null;
         p1 = null;
