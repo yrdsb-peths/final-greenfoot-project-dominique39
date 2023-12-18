@@ -3,6 +3,9 @@ import java.util.*;
 
 public class Player extends Obstructables
 {
+    private int playerWidth;
+    private int playerHeight;
+
     //move
     private String keyLeft;
     private String keyRight;
@@ -26,6 +29,9 @@ public class Player extends Obstructables
             right[i] = new GreenfootImage("player/" + name + "/tile" + i + ".png");
             right[i].mirrorHorizontally();
         }
+
+        playerWidth = getImage().getWidth()+30;
+        playerHeight = getImage().getHeight()+30;
     }
 
     public void act()
@@ -41,7 +47,6 @@ public class Player extends Obstructables
     }
 
     private void moveX(){
-        int playerWidth = getImage().getWidth();
         int moveDirection = 0;
         boolean isBothPressed = (Greenfoot.isKeyDown(keyLeft) == Greenfoot.isKeyDown(keyRight));
 
@@ -68,17 +73,17 @@ public class Player extends Obstructables
         //move player accordingly
         setLocation(getX()+(moveDirection*4), getY());
         //revert to original position if character at world edge
-        if(getX() <= playerWidth/2 || getX() >= 1000-playerWidth/2){
+        if(getX() <= playerWidth || getX() >= 1000-playerWidth){
             setLocation(getX()-moveDirection*4, getY());
         }
 
-        //obstructables collision
+        //collision
         List<Obstructables> r = getIntersectingObjects(Obstructables.class);
         if(r != null){
             for(int i = 0; i < r.size(); i++){
                 Actor temp = r.get(i);
-                int tempHeight = temp.getImage().getHeight();
-                if(getY() >= temp.getY()-tempHeight+5 && getY() <= temp.getY()+tempHeight-5){
+                int tempHeight = temp.getImage().getHeight()-5;
+                if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ /*this.height under other.topEdge && this.height ontop of other.bottomEdge*/
                     setLocation(getX()-moveDirection*4, getY());
                 }
             }
@@ -86,7 +91,6 @@ public class Player extends Obstructables
     }
 
     private void moveY(){
-        int playerHeight = getImage().getHeight();
         boolean canJump = false;
 
         //gradual falling with limits
@@ -97,17 +101,30 @@ public class Player extends Obstructables
         if(getY() > playerHeight/2+900){
             //back to top of the screen
             setLocation(getX()-200, -playerHeight/2);
+            if(getX() < playerWidth){
+                setLocation(playerWidth, getY());
+            }
         }else{
             //fall
             setLocation(getX(), getY()+fallIndex);
         }
 
-        if(getOneIntersectingObject(Obstructables.class) != null || getOneIntersectingObject(Floor.class) != null){
-            setLocation(getX(), getY()-fallIndex);
-            canJump = true;
-            fallIndex = 0;
+        //collision
+        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                if(getY() <= temp.getY()){
+                    setLocation(getX(), getY()-fallIndex);
+                    canJump = true;
+                    fallIndex = 0;
+                }else if(!canJump && fallIndex < 0){
+                    fallIndex += fallIndex*-2;
+                }
+            }
         }
 
+        //check jumping
         if(Greenfoot.isKeyDown(keyUp) && canJump){
             fallIndex = -jumpHeight;
         }
@@ -125,5 +142,13 @@ public class Player extends Obstructables
         }else{
             setImage(right[imageIndex/10]);
         }
+    }
+
+    public int getPlayerWidth(){
+        return playerWidth;
+    }
+
+    public int getPlayerHeight(){
+        return playerHeight;
     }
 }
