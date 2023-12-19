@@ -109,17 +109,20 @@ public class Player extends Obstructables
             setLocation(getX(), getY()+fallIndex);
         }
 
-        //collision
+        //standing collision
         List<Obstructables> r = getIntersectingObjects(Obstructables.class);
         if(r != null){
             for(int i = 0; i < r.size(); i++){
                 Actor temp = r.get(i);
-                if(getY() <= temp.getY()){
+                if(getY() < temp.getY()){
                     setLocation(getX(), getY()-fallIndex);
                     canJump = true;
                     fallIndex = 0;
-                }else if(!canJump && fallIndex < 0){
-                    fallIndex += fallIndex*-2;
+                }else{
+                    if(!canJump && fallIndex < 0){
+                        fallIndex += fallIndex*-2;
+                    }
+                    canJump = false;
                 }
             }
         }
@@ -127,6 +130,17 @@ public class Player extends Obstructables
         //check jumping
         if(Greenfoot.isKeyDown(keyUp) && canJump){
             fallIndex = -jumpHeight;
+        }
+        
+        r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                if(getY() > temp.getY()){
+                    setLocation(getX(), getY()+fallIndex);
+                    canJump = false;
+                }
+            }
         }
     }
 
