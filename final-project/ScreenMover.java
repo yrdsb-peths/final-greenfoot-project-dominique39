@@ -10,6 +10,8 @@ public class ScreenMover extends Actor
         for(int i = 0; i < players.size(); i++){
             totalX+= players.get(i).getX();
         }
-        setLocation(totalX/players.size(), getY());
+        if(players.size() != 0){
+            setLocation(totalX/players.size(), getY());
+        }
     }
 }

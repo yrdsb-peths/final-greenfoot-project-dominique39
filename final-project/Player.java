@@ -14,10 +14,12 @@ public class Player extends Obstructables
     private int fallIndex = 0;
 
     //animate
-    public int facing;
+    private int facing;
     private int imageIndex = 0;
     private GreenfootImage[] left = new GreenfootImage[4];
     private GreenfootImage[] right = new GreenfootImage[4];
+    
+    private boolean escaped = false;
 
     public Player(String name, String keyLeft, String keyRight, String keyUp){
         this.keyLeft = keyLeft;
@@ -36,13 +38,19 @@ public class Player extends Obstructables
 
     public void act()
     {
+        Level world = (Level) getWorld();
+        
         moveY();
         moveX();
 
         //obtain key
         if(isTouching(Key.class)){
-            Level world = (Level) getWorld();
             world.keyFollow(this);
+        }
+        
+        //leave level
+        if(isTouching(Door.class) && Greenfoot.isKeyDown(keyUp)){
+            world.goInDoor(this);
         }
     }
 
@@ -83,7 +91,7 @@ public class Player extends Obstructables
             for(int i = 0; i < r.size(); i++){
                 Actor temp = r.get(i);
                 int tempHeight = temp.getImage().getHeight()-5;
-                if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ /*this.height under other.topEdge && this.height ontop of other.bottomEdge*/
+                if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ //this.height under other.topEdge && this.height ontop of other.bottomEdge
                     setLocation(getX()-moveDirection*4, getY());
                 }
             }
@@ -114,7 +122,7 @@ public class Player extends Obstructables
         if(r != null){
             for(int i = 0; i < r.size(); i++){
                 Actor temp = r.get(i);
-                if(getY() < temp.getY()){
+                if(getY() < temp.getY()){ //this.y lower than other.y
                     setLocation(getX(), getY()-fallIndex);
                     canJump = true;
                     fallIndex = 0;
@@ -164,5 +172,17 @@ public class Player extends Obstructables
 
     public int getPlayerHeight(){
         return playerHeight;
+    }
+    
+    public int getFacing(){
+        return facing;
+    }
+    
+    public boolean isEscaped(){
+        return escaped;
+    }
+    
+    public void escaped(){
+        escaped = true;
     }
 }

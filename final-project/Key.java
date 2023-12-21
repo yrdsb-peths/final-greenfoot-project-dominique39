@@ -13,7 +13,7 @@ public class Key extends NonObstructables
 
     public void act(){
         if(follow){
-            if(player.facing == 1){
+            if(player.getFacing() == 1){
                 setLocation(player.getX()-70, player.getY()-50);
             }else{
                 setLocation(player.getX()+70, player.getY()-50);
@@ -21,11 +21,15 @@ public class Key extends NonObstructables
         }
     }
 
-    public void setFollow(boolean r){
-        follow = r;
+    public void obtained(){
+        follow = true;
     }
 
     public void setPlayer(Player player){
         this.player = player;
+    }
+    
+    public Player getPlayer(){
+        return player;
     }
 }

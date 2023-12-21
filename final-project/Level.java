@@ -10,11 +10,17 @@ public class Level extends WorldwCursor
     Player p1;
     Player p2;
     Key key;
+    Door door;
+    Label pass_label;
     ArrayList<Floor> floor = new ArrayList(0);
+
+    private boolean running = true;
 
     public Level(int lv)
     {
         super();
+        setPaintOrder(Player.class);
+        setActOrder(Level.class);
         homeBut = new Button(backMainScrn,"home");
         addObject(homeBut,70,70);
 
@@ -43,7 +49,7 @@ public class Level extends WorldwCursor
                     intData[i] = Integer.parseInt(strData[i]);
                 }
 
-                loadObj(obj,intData);
+                loadObj(obj,intData); //where/size
             }
             lvFile.close();
         }catch (FileNotFoundException e) {
@@ -63,33 +69,58 @@ public class Level extends WorldwCursor
                 floor.add(new Floor(data[2],data[3]));
                 addObject(floor.get(floor.size()-1),data[0],data[1]);
                 break;
+            case "door":
+                door = new Door();
+                addObject(door,data[0],data[1]);
+                break;
         }
     }
 
     public void act(){
-        if(scrnMover.getX() != getWidth()/2){
-            List<Obstructables> obstructables = getObjects(Obstructables.class);
-            List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
-            int moveConst = 0;
-            if((p1.getX() > p1.getPlayerWidth() && p2.getX() > p2.getPlayerWidth()) && scrnMover.getX() > getWidth()/2){
-                moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
+        if(running){
+            if(scrnMover.getX() != getWidth()/2){
+                List<Obstructables> obstructables = getObjects(Obstructables.class);
+                List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
+                int moveConst = 0;
+                if(scrnMover.getX() > getWidth()/2 && door.getX() > getWidth()-100){
+                    moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
+                }
+
+                for(int i = 0; i < obstructables.size(); i++){
+                    Actor temp = obstructables.get(i);
+                    temp.setLocation(temp.getX()+moveConst,temp.getY());
+                }
+                for(int i = 0; i < nonObstructables.size(); i++){
+                    Actor temp = nonObstructables.get(i);
+                    temp.setLocation(temp.getX()+moveConst,temp.getY());
+                }
             }
 
-            for(int i = 0; i < obstructables.size(); i++){
-                Actor temp = obstructables.get(i);
-                temp.setLocation(temp.getX()+moveConst,temp.getY());
+            if(p1.isEscaped() && p2.isEscaped()){
+                pass_label = new Label("level_cleared");
+                addObject(pass_label, door.getX()-1000, getHeight()/2);
+                running = false;
             }
-            for(int i = 0; i < nonObstructables.size(); i++){
-                Actor temp = nonObstructables.get(i);
-                temp.setLocation(temp.getX()+moveConst,temp.getY());
+        }else{
+            if(pass_label.getX() <= getWidth()/2){
+                pass_label.setLocation(pass_label.getX()+10,pass_label.getY());
+            }else{
+                Greenfoot.delay(60*2);
+                leaveWorld("LvSelection");
             }
         }
     }
 
-    private void backMainScrn(){
+    private void leaveWorld(String toWorld){
         clearObjs();
-        MainScrn world = new MainScrn();
-        Greenfoot.setWorld(world);
+        if(toWorld.equals("LvSelection")){
+            LvSelection world = new LvSelection();
+            Greenfoot.setWorld(world);
+        }
+        if(toWorld.equals("MainScrn")){
+            MainScrn world = new MainScrn();
+            Greenfoot.setWorld(world);
+        }
     }
 
     private void clearObjs(){
@@ -103,8 +134,20 @@ public class Level extends WorldwCursor
 
     public void keyFollow(Player player){
         key.setPlayer(player);
-        key.setFollow(true);
+        key.obtained();
     }
 
-    private Clickable backMainScrn = () -> backMainScrn();
+    public void goInDoor(Player player){
+        if(door.opened){
+            removeObject(player);
+            player.escaped();
+        }else if(key.getPlayer() == player){
+            door.open();
+            removeObject(key);
+            removeObject(player);
+            player.escaped();
+        }
+    }
+
+    private Clickable backMainScrn = () -> leaveWorld("MainScrn");
 }
