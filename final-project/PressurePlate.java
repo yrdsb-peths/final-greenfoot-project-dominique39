@@ -1,11 +1,23 @@
 import greenfoot.*;
 
-public class PressurePlate extends Obstructables
+public class PressurePlate extends NonObstructables
 {
+    private boolean stepped;
+    
     public void act()
     {
-        if(isTouching(Player.class)){
-            
+        if(stepped){
+            //setImage();
+        }else{
+            //setImage();
         }
+    }
+    
+    public void stepped(){
+        stepped = true;
+    }
+    
+    public boolean isStepped(){
+        return stepped;
     }
 }

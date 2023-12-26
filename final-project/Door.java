@@ -3,17 +3,22 @@ import java.util.*;
 
 public class Door extends NonObstructables
 {
-    public boolean opened = false;
+    private  boolean unlocked = false;
+    
     public void act()
     {
-        if(opened){
+        if(unlocked){
             setImage("objects/door_opened.png");
         }else{
             setImage("objects/door_locked.png");
         }
     }
     
-    public void open(){
-        opened = true;
+    public void unlock(){
+        unlocked = true;
+    }
+    
+    public boolean isUnlocked(){
+        return unlocked;
     }
 }

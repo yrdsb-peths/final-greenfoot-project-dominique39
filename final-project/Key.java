@@ -2,7 +2,7 @@ import greenfoot.*;
 
 public class Key extends NonObstructables
 {
-    private boolean follow;
+    private boolean obtained;
     private Player player;
 
     public Key(){
@@ -12,7 +12,7 @@ public class Key extends NonObstructables
     }
 
     public void act(){
-        if(follow){
+        if(obtained){
             if(player.getFacing() == 1){
                 setLocation(player.getX()-70, player.getY()-50);
             }else{
@@ -22,7 +22,7 @@ public class Key extends NonObstructables
     }
 
     public void obtained(){
-        follow = true;
+        obtained = true;
     }
 
     public void setPlayer(Player player){
