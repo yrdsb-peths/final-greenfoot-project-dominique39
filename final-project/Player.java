@@ -3,23 +3,23 @@ import java.util.*;
 
 public class Player extends Obstructables
 {
+    private int playerWidth;
+    private int playerHeight;
+
     //move
     private String keyLeft;
     private String keyRight;
     private String keyUp;
-
-    //jump
-    private boolean canJump;
     private int jumpHeight = 19;
-
-    //fall
     private int fallIndex = 0;
 
     //animate
-    public int facing;
+    private int facing;
     private int imageIndex = 0;
     private GreenfootImage[] left = new GreenfootImage[4];
     private GreenfootImage[] right = new GreenfootImage[4];
+    
+    private boolean escaped = false;
 
     public Player(String name, String keyLeft, String keyRight, String keyUp){
         this.keyLeft = keyLeft;
@@ -31,17 +31,30 @@ public class Player extends Obstructables
             right[i] = new GreenfootImage("player/" + name + "/tile" + i + ".png");
             right[i].mirrorHorizontally();
         }
+
+        playerWidth = getImage().getWidth()+30;
+        playerHeight = getImage().getHeight()+30;
     }
 
     public void act()
     {
+        Level world = (Level) getWorld();
+        
         moveY();
         moveX();
-        touchKey();
+
+        //obtain key
+        if(isTouching(Key.class)){
+            world.keyFollow(this);
+        }
+        
+        //leave level
+        if(isTouching(Door.class) && Greenfoot.isKeyDown(keyUp)){
+            world.goInDoor(this);
+        }
     }
 
     private void moveX(){
-        int playerWidth = getImage().getWidth();
         int moveDirection = 0;
         boolean isBothPressed = (Greenfoot.isKeyDown(keyLeft) == Greenfoot.isKeyDown(keyRight));
 
@@ -65,40 +78,77 @@ public class Player extends Obstructables
             moveDirection = facing;
         }
 
+        //move player accordingly
         setLocation(getX()+(moveDirection*4), getY());
-        if(getX() <= playerWidth/2 || getX() >= 1500-playerWidth/2){
-            setLocation(getX()+(-moveDirection*4), getY());
+        //revert to original position if character at world edge
+        if(getX() <= playerWidth || getX() >= 1000-playerWidth){
+            setLocation(getX()-moveDirection*4, getY());
         }
 
-        Actor intersectObj = getOneIntersectingObject(Obstructables.class);
-        if(intersectObj != null){
-            setLocation(getX()-moveDirection*4, getY());
+        //collision
+        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                int tempHeight = temp.getImage().getHeight()-5;
+                if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ //this.height under other.topEdge && this.height ontop of other.bottomEdge
+                    setLocation(getX()-moveDirection*4, getY());
+                }
+            }
         }
     }
 
     private void moveY(){
-        int playerHeight = getImage().getHeight();
-
-        canJump = false;
-        if(getY() < playerHeight/2+900){
-            setLocation(getX(), getY()+fallIndex);
-        }else{
-            setLocation(getX()-200, -playerHeight/2);
-        }
-
-        if(getOneIntersectingObject(Obstructables.class) != null){
-            setLocation(getX(), getY()-fallIndex);
-            canJump = true;
-            fallIndex = 0;
-        }
+        boolean canJump = false;
 
         //gradual falling with limits
         if(fallIndex < 40){
             fallIndex++;
         }
 
+        if(getY() > playerHeight/2+900){
+            //back to top of the screen
+            setLocation(getX()-200, -playerHeight/2);
+            if(getX() < playerWidth){
+                setLocation(playerWidth, getY());
+            }
+        }else{
+            //fall
+            setLocation(getX(), getY()+fallIndex);
+        }
+
+        //standing collision
+        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                if(getY() < temp.getY()){ //this.y lower than other.y
+                    setLocation(getX(), getY()-fallIndex);
+                    canJump = true;
+                    fallIndex = 0;
+                }else{
+                    if(!canJump && fallIndex < 0){
+                        fallIndex += fallIndex*-2;
+                    }
+                    canJump = false;
+                }
+            }
+        }
+
+        //check jumping
         if(Greenfoot.isKeyDown(keyUp) && canJump){
             fallIndex = -jumpHeight;
+        }
+        
+        r = getIntersectingObjects(Obstructables.class);
+        if(r != null){
+            for(int i = 0; i < r.size(); i++){
+                Actor temp = r.get(i);
+                if(getY() > temp.getY()){
+                    setLocation(getX(), getY()+fallIndex);
+                    canJump = false;
+                }
+            }
         }
     }
 
@@ -116,23 +166,23 @@ public class Player extends Obstructables
         }
     }
 
-    private String collideDirection(){
-        Actor collidingObjs = getOneIntersectingObject(Obstructables.class);
-        if(collidingObjs != null){
-            if(getX() > collidingObjs.getX()){
-                return "Left";
-            }
-            if(getX() < collidingObjs.getX()){
-                return "Right";
-            }
-        }
-        return "";
+    public int getPlayerWidth(){
+        return playerWidth;
     }
 
-    private void touchKey(){
-        if(isTouching(Key.class)){
-            Level world = (Level) getWorld();
-            world.keyFollow(this);
-        }
+    public int getPlayerHeight(){
+        return playerHeight;
+    }
+    
+    public int getFacing(){
+        return facing;
+    }
+    
+    public boolean isEscaped(){
+        return escaped;
+    }
+    
+    public void escaped(){
+        escaped = true;
     }
 }

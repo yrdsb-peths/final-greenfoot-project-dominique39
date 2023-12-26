@@ -36,6 +36,15 @@ public class Label extends Actor
         this.fontSize = fontSize;
         updateImage();
     }
+    
+    /**
+     * Create a new label, initialise it with the provided image
+     */
+    public Label(String path)
+    {
+        GreenfootImage img = new GreenfootImage(path + ".png");
+        setImage(img);
+    }
 
     /**
      * Sets the value  as text

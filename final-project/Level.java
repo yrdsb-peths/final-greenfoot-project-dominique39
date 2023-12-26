@@ -6,26 +6,37 @@ import java.util.*;
 public class Level extends WorldwCursor
 {
     Button homeBut;
-    Button pauseBut;
-    Player p1;
-    Player p2;
+    ScreenMover scrnMover;
     Key key;
+    Door door;
+    Door leftBoundary;
+    Label pass_label;
     ArrayList<Floor> floor = new ArrayList(0);
+    ArrayList<Player> players = new ArrayList(0);
+
+    private boolean won = false;
+    private boolean error = false;
 
     public Level(int lv)
     {
         super();
+        setPaintOrder(Player.class);
+        setActOrder(Level.class);
+
         homeBut = new Button(backMainScrn,"home");
         addObject(homeBut,70,70);
 
-        pauseBut = new Button(pause,"pause");
-        addObject(pauseBut,1425,75);
+        leftBoundary = new Door();
+        addObject(leftBoundary,-200, 0);
 
-        p1 = new Player("p1","a","d","w");
-        addObject(p1,100,730);
+        scrnMover = new ScreenMover();
+        addObject(scrnMover, 0, 0);
 
-        p2 = new Player("p2","left","right","up");
-        addObject(p2,200,730);
+        players.add(new Player("p1","a","d","w"));
+        players.add(new Player("p2","left","right","up"));
+
+        addObject(players.get(0),getWidth()/10,getHeight()-170);
+        addObject(players.get(1),getWidth()/10*2,getHeight()-170);
 
         loadLevel(lv);
     }
@@ -43,55 +54,129 @@ public class Level extends WorldwCursor
                     intData[i] = Integer.parseInt(strData[i]);
                 }
 
-                loadObj(obj,intData);
+                loadObj(obj,intData); //where/size
             }
             lvFile.close();
         }catch (FileNotFoundException e) {
             System.out.println("File not loaded; \n not existing object");
+            error = true;
         }catch (InputMismatchException e) {
             System.out.println("File not loaded; \n wrong object size or location");
+            error = true;
         }
     }
 
     private void loadObj(String obj,int[] data){        
         switch(obj){
             case "key":
-                key = new Key(50,90);
+                key = new Key();
                 addObject(key,data[0],data[1]);
                 break;
             case "floor":
                 floor.add(new Floor(data[2],data[3]));
                 addObject(floor.get(floor.size()-1),data[0],data[1]);
                 break;
+            case "door":
+                door = new Door();
+                addObject(door,data[0],data[1]);
+                break;
         }
     }
 
-    private void backMainScrn(){
-        clearObjs();
-        MainScrn world = new MainScrn();
-        Greenfoot.setWorld(world);
+    public void act(){
+        if(error){
+            return;
+        }
+
+        if(!won){
+            if(scrnMover.getX() != getWidth()/2){
+                List<Obstructables> obstructables = getObjects(Obstructables.class);
+                List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
+                int moveConst = 0;
+                if(scrnMover.getX() > getWidth()/2){
+                    if(door.getX() > getWidth()-100){
+                        moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
+                    }
+                }else{
+                    if(leftBoundary.getX() < -200){
+                        moveConst = (getWidth()/2 - scrnMover.getX())/10;
+                    }
+                }
+
+                for(int i = 0; i < obstructables.size(); i++){
+                    Actor temp = obstructables.get(i);
+                    temp.setLocation(temp.getX()+moveConst,temp.getY());
+                }
+                for(int i = 0; i < nonObstructables.size(); i++){
+                    Actor temp = nonObstructables.get(i);
+                    temp.setLocation(temp.getX()+moveConst,temp.getY());
+                }
+            }
+
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).isDead()){
+                    leaveWorld("Transition");
+                }
+            }
+
+            if(players.get(0).isEscaped() && players.get(1).isEscaped()){
+                pass_label = new Label("level_cleared");
+                addObject(pass_label, door.getX()-1000, getHeight()/2);
+                won = true;
+            }
+        }else{
+            if(pass_label.getX() <= getWidth()/2){
+                pass_label.setLocation(pass_label.getX()+10,pass_label.getY());
+            }else{
+                Greenfoot.delay(60*2);
+                leaveWorld("LvSelection");
+            }
+        }
     }
 
-    private void pause(){
+    private void leaveWorld(String worldName){
+        World toWorld = null;
         clearObjs();
-        Pause world = new Pause(this);
-        Greenfoot.setWorld(world);
+        switch(worldName){
+            case "LvSelection":
+                toWorld = new LvSelection();
+                break;
+            case "MainScrn":
+                toWorld = new MainScrn();
+                break;
+            case "Transition":
+                toWorld = new Transition();
+                break;
+        }
+        Greenfoot.setWorld(toWorld);
     }
 
     private void clearObjs(){
         homeBut = null;
-        pauseBut = null;
-        p1 = null;
-        p2 = null;
+        players = null;
         key = null;
         floor = null;
+        scrnMover = null;
+        door = null;
+        leftBoundary = null;
     }
 
     public void keyFollow(Player player){
         key.setPlayer(player);
-        key.setFollow(true);
+        key.obtained();
     }
 
-    private Clickable backMainScrn = () -> backMainScrn();
-    private Clickable pause = () -> pause();
+    public void goInDoor(Player player){
+        if(door.isUnlocked()){
+            removeObject(player);
+            player.escaped();
+        }else if(key.getPlayer() == player){
+            door.unlock();
+            removeObject(key);
+            removeObject(player);
+            player.escaped();
+        }
+    }
+
+    private Clickable backMainScrn = () -> leaveWorld("MainScrn");
 }
