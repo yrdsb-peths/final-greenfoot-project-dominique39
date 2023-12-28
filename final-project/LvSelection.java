@@ -24,8 +24,7 @@ public class LvSelection extends WorldwCursor
 
     private void toLv(int lv){
         lvButtons = null;
-        Level world = new Level(lv);
-        Greenfoot.setWorld(world);
+        Greenfoot.setWorld(new Transition(lv));
     }
 
     private Clickable toLv1 = () -> toLv(1);
