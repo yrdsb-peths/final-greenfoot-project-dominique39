@@ -5,21 +5,25 @@ import java.util.*;
 
 public class Level extends WorldwCursor
 {
-    Button homeBut;
-    ScreenMover scrnMover;
-    Key key;
-    Door door;
-    Door leftBoundary;
-    Label pass_label;
-    ArrayList<Floor> floor = new ArrayList(0);
-    ArrayList<Player> players = new ArrayList(0);
+    private Button homeBut;
+    private ScreenMover scrnMover;
+    private Key key;
+    private Door door;
+    private Door leftBoundary;
+    private Label pass_label;
+    private ArrayList<Floor> floor = new ArrayList(0);
+    private ArrayList<Player> players = new ArrayList(0);
+    private ArrayList<Laser> lasers = new ArrayList(0);
+    private ArrayList<PressurePlate> pressurePlates = new ArrayList(0);
 
+    private int lv;
     private boolean won = false;
     private boolean error = false;
 
     public Level(int lv)
     {
         super();
+        this.lv = lv;
         setPaintOrder(Player.class);
         setActOrder(Level.class);
 
@@ -38,10 +42,7 @@ public class Level extends WorldwCursor
         addObject(players.get(0),getWidth()/10,getHeight()-170);
         addObject(players.get(1),getWidth()/10*2,getHeight()-170);
 
-        loadLevel(lv);
-    }
-
-    private void loadLevel(int lv){
+        //load level
         try{
             Scanner lvFile = new Scanner(new File("levels/lv"+lv+".txt"));
             while(lvFile.hasNextLine()){
@@ -58,10 +59,10 @@ public class Level extends WorldwCursor
             }
             lvFile.close();
         }catch (FileNotFoundException e) {
-            System.out.println("File not loaded; \n not existing object");
+            System.out.println("File not loaded; \n    file not found");
             error = true;
         }catch (InputMismatchException e) {
-            System.out.println("File not loaded; \n wrong object size or location");
+            System.out.println("File not loaded; \n    incorrect format for object, size, or location");
             error = true;
         }
     }
@@ -80,11 +81,20 @@ public class Level extends WorldwCursor
                 door = new Door();
                 addObject(door,data[0],data[1]);
                 break;
+            case "laser":
+                lasers.add(new Laser());
+                addObject(lasers.get(lasers.size()-1),data[0],data[1]);
+                break;
+            case "pressure_plate":
+                pressurePlates.add(new PressurePlate());
+                addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
+                break;
         }
     }
 
     public void act(){
         if(error){
+            leaveWorld("LvSelection");
             return;
         }
 
@@ -120,7 +130,7 @@ public class Level extends WorldwCursor
             }
 
             if(players.get(0).isEscaped() && players.get(1).isEscaped()){
-                pass_label = new Label("level_cleared");
+                pass_label = new Label("level_cleared.png");
                 addObject(pass_label, door.getX()-1000, getHeight()/2);
                 won = true;
             }
@@ -141,11 +151,8 @@ public class Level extends WorldwCursor
             case "LvSelection":
                 toWorld = new LvSelection();
                 break;
-            case "MainScrn":
-                toWorld = new MainScrn();
-                break;
             case "Transition":
-                toWorld = new Transition();
+                toWorld = new Transition(lv);
                 break;
         }
         Greenfoot.setWorld(toWorld);
@@ -153,17 +160,24 @@ public class Level extends WorldwCursor
 
     private void clearObjs(){
         homeBut = null;
-        players = null;
-        key = null;
-        floor = null;
         scrnMover = null;
+        key = null;
         door = null;
         leftBoundary = null;
+        pass_label = null;
+        players = null;
+        floor = null;
+        lasers = null;
+        pressurePlates = null;
     }
 
-    public void keyFollow(Player player){
+    public void obtainKey(Player player){
         key.setPlayer(player);
         key.obtained();
+    }
+    
+    public void pressPlate(PressurePlate pressurePlate){
+        pressurePlate.stepped();
     }
 
     public void goInDoor(Player player){
@@ -178,5 +192,5 @@ public class Level extends WorldwCursor
         }
     }
 
-    private Clickable backMainScrn = () -> leaveWorld("MainScrn");
+    private Clickable backMainScrn = () -> leaveWorld("LvSelection");
 }

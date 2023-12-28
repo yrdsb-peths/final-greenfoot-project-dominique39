@@ -3,13 +3,15 @@ import greenfoot.*;
 public class PressurePlate extends NonObstructables
 {
     private boolean stepped;
+    private Floor moveObj;
+    private String moveDirection;
     
     public void act()
     {
         if(stepped){
-            //setImage();
+            setImage("objects/plate_stepped.png");
         }else{
-            //setImage();
+            setImage("objects/plate.png");
         }
     }
     
