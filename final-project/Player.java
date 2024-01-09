@@ -5,6 +5,8 @@ public class Player extends Obstructables
 {
     private int playerWidth;
     private int playerHeight;
+    private boolean escaped = false;
+    private boolean dead = false;
 
     //move
     private String keyLeft;
@@ -19,8 +21,6 @@ public class Player extends Obstructables
     private GreenfootImage[] left = new GreenfootImage[4];
     private GreenfootImage[] right = new GreenfootImage[4];
     
-    private boolean escaped = false;
-
     public Player(String name, String keyLeft, String keyRight, String keyUp){
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
@@ -39,13 +39,21 @@ public class Player extends Obstructables
     public void act()
     {
         Level world = (Level) getWorld();
-        
         moveY();
         moveX();
 
         //obtain key
         if(isTouching(Key.class)){
-            world.keyFollow(this);
+            world.obtainKey(this);
+        }
+        
+        //touch laser
+        if(isTouching(Laser.class)){
+            dead = true;
+        }
+        
+        if(getIntersectingObjects(PressurePlate.class).size() > 0){
+            world.pressPlate(getIntersectingObjects(PressurePlate.class).get(0));
         }
         
         //leave level
@@ -165,14 +173,6 @@ public class Player extends Obstructables
             setImage(right[imageIndex/10]);
         }
     }
-
-    public int getPlayerWidth(){
-        return playerWidth;
-    }
-
-    public int getPlayerHeight(){
-        return playerHeight;
-    }
     
     public int getFacing(){
         return facing;
@@ -184,5 +184,9 @@ public class Player extends Obstructables
     
     public void escaped(){
         escaped = true;
+    }
+    
+    public boolean isDead(){
+        return dead;
     }
 }

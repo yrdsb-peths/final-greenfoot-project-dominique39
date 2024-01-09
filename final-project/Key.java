@@ -6,9 +6,7 @@ public class Key extends NonObstructables
     private Player player;
 
     public Key(){
-        GreenfootImage img = new GreenfootImage("objects/key.png");
-        img.scale(50, 90);
-        setImage(img);
+        setImage("objects/key.png");
     }
 
     public void act(){

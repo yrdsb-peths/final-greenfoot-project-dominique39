@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.*;
 
 public class PressurePlate extends NonObstructables
 {
@@ -7,16 +8,17 @@ public class PressurePlate extends NonObstructables
     public void act()
     {
         if(stepped){
-            //setImage();
+            setImage("objects/plate_stepped.png");
         }else{
-            //setImage();
+            setImage("objects/plate.png");
         }
+        stepped = false;
     }
-    
+
     public void stepped(){
         stepped = true;
     }
-    
+
     public boolean isStepped(){
         return stepped;
     }

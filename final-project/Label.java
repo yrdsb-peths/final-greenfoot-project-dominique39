@@ -42,8 +42,7 @@ public class Label extends Actor
      */
     public Label(String path)
     {
-        GreenfootImage img = new GreenfootImage(path + ".png");
-        setImage(img);
+        setImage(path);
     }
 
     /**
