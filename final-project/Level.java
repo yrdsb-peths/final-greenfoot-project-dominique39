@@ -5,13 +5,14 @@ import java.util.*;
 
 public class Level extends WorldwCursor
 {
+    private Scanner lvFile;
     private Button homeBut;
     private ScreenMover scrnMover;
     private Key key;
     private Door door;
     private Door leftBoundary;
     private Label pass_label;
-    private ArrayList<Floor> floor = new ArrayList(0);
+    private ArrayList<Floor> floors = new ArrayList(0);
     private ArrayList<Player> players = new ArrayList(0);
     private ArrayList<Laser> lasers = new ArrayList(0);
     private ArrayList<PressurePlate> pressurePlates = new ArrayList(0);
@@ -24,8 +25,8 @@ public class Level extends WorldwCursor
     {
         super();
         this.lv = lv;
-        setPaintOrder(Player.class);
-        setActOrder(Level.class);
+        setPaintOrder(Player.class, Floor.class);
+        setActOrder(Player.class, Floor.class);
 
         homeBut = new Button(backMainScrn,"home");
         addObject(homeBut,70,70);
@@ -44,18 +45,17 @@ public class Level extends WorldwCursor
 
         //load level
         try{
-            Scanner lvFile = new Scanner(new File("levels/lv"+lv+".txt"));
+            lvFile = new Scanner(new File("levels/lv"+lv+".txt"));
             while(lvFile.hasNextLine()){
-                String obj = lvFile.nextLine();
-                String[] strData = lvFile.nextLine().split("/");
+                String[] data = lvFile.nextLine().split("/");
 
                 //convert string array to int array
-                int[] intData = new int[strData.length];
-                for(int i = 0; i < strData.length; i++){
-                    intData[i] = Integer.parseInt(strData[i]);
+                int[] intData = new int[data.length-1];
+                for(int i = 0; i < data.length-1; i++){
+                    intData[i] = Integer.parseInt(data[i+1]);
                 }
 
-                loadObj(obj,intData); //where/size
+                loadObj(data[0],intData); //where/size
             }
             lvFile.close();
         }catch (FileNotFoundException e) {
@@ -74,24 +74,28 @@ public class Level extends WorldwCursor
                 addObject(key,data[0],data[1]);
                 break;
             case "floor":
-                floor.add(new Floor(data[2],data[3]));
-                addObject(floor.get(floor.size()-1),data[0],data[1]);
+                floors.add(new Floor(data[2],data[3]));
+                addObject(floors.get(floors.size()-1),data[0],data[1]);
                 break;
             case "door":
                 door = new Door();
                 addObject(door,data[0],data[1]);
                 break;
             case "laser":
-                lasers.add(new Laser());
+                lasers.add(new Laser(data[2],data[3]));
                 addObject(lasers.get(lasers.size()-1),data[0],data[1]);
                 break;
             case "pressure_plate":
                 pressurePlates.add(new PressurePlate());
                 addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
                 break;
+            case "-floor":
+                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5]));
+                addObject(floors.get(floors.size()-1),data[0],data[1]);
+                break;    
         }
     }
-
+    
     public void act(){
         if(error){
             leaveWorld("LvSelection");
@@ -126,6 +130,7 @@ public class Level extends WorldwCursor
             for(int i = 0; i < players.size(); i++){
                 if(players.get(i).isDead()){
                     leaveWorld("Transition");
+                    return;
                 }
             }
 
@@ -166,7 +171,7 @@ public class Level extends WorldwCursor
         leftBoundary = null;
         pass_label = null;
         players = null;
-        floor = null;
+        floors = null;
         lasers = null;
         pressurePlates = null;
     }
@@ -175,7 +180,7 @@ public class Level extends WorldwCursor
         key.setPlayer(player);
         key.obtained();
     }
-    
+
     public void pressPlate(PressurePlate pressurePlate){
         pressurePlate.stepped();
     }
