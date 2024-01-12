@@ -1,6 +1,6 @@
 import greenfoot.*;
 
-public class Key extends NonObstructables
+public class Key extends GameObjects
 {
     private boolean obtained;
     private Player player;

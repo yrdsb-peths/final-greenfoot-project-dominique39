@@ -15,6 +15,7 @@ public class Level extends WorldwCursor
     private ArrayList<Floor> floors = new ArrayList(0);
     private ArrayList<Player> players = new ArrayList(0);
     private ArrayList<Laser> lasers = new ArrayList(0);
+    private ArrayList<Block> blocks = new ArrayList(0);
     private ArrayList<PressurePlate> pressurePlates = new ArrayList(0);
 
     private int lv;
@@ -85,6 +86,10 @@ public class Level extends WorldwCursor
                 lasers.add(new Laser(data[2],data[3]));
                 addObject(lasers.get(lasers.size()-1),data[0],data[1]);
                 break;
+            case "block":
+                blocks.add(new Block());
+                addObject(blocks.get(blocks.size()-1),data[0],data[1]);
+                break;
             case "pressure_plate":
                 pressurePlates.add(new PressurePlate());
                 addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
@@ -92,10 +97,14 @@ public class Level extends WorldwCursor
             case "-floor":
                 floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5]));
                 addObject(floors.get(floors.size()-1),data[0],data[1]);
-                break;    
+                break;
+            case "-laser":
+                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5]));
+                addObject(floors.get(floors.size()-1),data[0],data[1]);
+                break;
         }
     }
-    
+
     public void act(){
         if(error){
             leaveWorld("LvSelection");
@@ -104,40 +113,34 @@ public class Level extends WorldwCursor
 
         if(!won){
             if(scrnMover.getX() != getWidth()/2){
-                List<Obstructables> obstructables = getObjects(Obstructables.class);
-                List<NonObstructables> nonObstructables = getObjects(NonObstructables.class);
+                List<GameObjects> gameObjects = getObjects(GameObjects.class);
                 int moveConst = 0;
-                if(scrnMover.getX() > getWidth()/2){
-                    if(door.getX() > getWidth()-100){
-                        moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
-                    }
-                }else{
-                    if(leftBoundary.getX() < -200){
-                        moveConst = (getWidth()/2 - scrnMover.getX())/10;
-                    }
+                if(scrnMover.getX() > getWidth()/2 && door.getX() > getWidth()-100){
+                    moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
                 }
-
-                for(int i = 0; i < obstructables.size(); i++){
-                    Actor temp = obstructables.get(i);
-                    temp.setLocation(temp.getX()+moveConst,temp.getY());
+                
+                if(scrnMover.getX() < getWidth()/2 && leftBoundary.getX() < -200){
+                    moveConst = (getWidth()/2 - scrnMover.getX())/10;
                 }
-                for(int i = 0; i < nonObstructables.size(); i++){
-                    Actor temp = nonObstructables.get(i);
+                
+                for(int i = 0; i < gameObjects.size(); i++){
+                    Actor temp = gameObjects.get(i);
                     temp.setLocation(temp.getX()+moveConst,temp.getY());
                 }
             }
-
+            
             for(int i = 0; i < players.size(); i++){
                 if(players.get(i).isDead()){
                     leaveWorld("Transition");
                     return;
                 }
             }
-
+            
             if(players.get(0).isEscaped() && players.get(1).isEscaped()){
                 pass_label = new Label("level_cleared.png");
                 addObject(pass_label, door.getX()-1000, getHeight()/2);
                 won = true;
+                return;
             }
         }else{
             if(pass_label.getX() <= getWidth()/2){
@@ -173,6 +176,7 @@ public class Level extends WorldwCursor
         players = null;
         floors = null;
         lasers = null;
+        blocks = null;
         pressurePlates = null;
     }
 

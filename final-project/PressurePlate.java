@@ -1,7 +1,7 @@
 import greenfoot.*;
 import java.util.*;
 
-public class PressurePlate extends NonObstructables
+public class PressurePlate extends GameObjects
 {
     private boolean stepped;
     

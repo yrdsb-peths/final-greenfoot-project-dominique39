@@ -1,10 +1,9 @@
 import greenfoot.*;
-import java.util.*;
 
-public class Door extends NonObstructables
+public class Door extends GameObjects
 {
-    private  boolean unlocked = false;
-    
+    private boolean unlocked = false;
+
     public void act()
     {
         if(unlocked){
@@ -13,11 +12,11 @@ public class Door extends NonObstructables
             setImage("objects/door_locked.png");
         }
     }
-    
+
     public void unlock(){
         unlocked = true;
     }
-    
+
     public boolean isUnlocked(){
         return unlocked;
     }
