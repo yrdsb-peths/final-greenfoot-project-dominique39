@@ -7,8 +7,7 @@ public class LvSelection extends WorldwCursor
 
     private List<Button> lvButtons = new ArrayList(numLevels);
 
-    public LvSelection()
-    {    
+    public LvSelection(){    
         super();
 
         lvButtons.add(new Button(toLv1,"lv1"));

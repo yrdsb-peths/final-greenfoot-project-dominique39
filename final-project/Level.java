@@ -3,10 +3,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Level extends WorldwCursor
+public class Level extends World
 {
     private Scanner lvFile;
-    private Button homeBut;
     private ScreenMover scrnMover;
     private Key key;
     private Door door;
@@ -24,13 +23,10 @@ public class Level extends WorldwCursor
 
     public Level(int lv)
     {
-        super();
+        super(1000, 900, 1, false);
         this.lv = lv;
         setPaintOrder(Player.class, Floor.class);
         setActOrder(Player.class, Floor.class);
-
-        homeBut = new Button(backMainScrn,"home");
-        addObject(homeBut,70,70);
 
         leftBoundary = new Door();
         addObject(leftBoundary,-200, 0);
@@ -142,6 +138,12 @@ public class Level extends WorldwCursor
                 won = true;
                 return;
             }
+            
+            if(Greenfoot.isKeyDown("escape")){
+                leaveWorld("Menu");
+                Greenfoot.delay(10);
+                return;
+            }
         }else{
             if(pass_label.getX() <= getWidth()/2){
                 pass_label.setLocation(pass_label.getX()+10,pass_label.getY());
@@ -162,12 +164,14 @@ public class Level extends WorldwCursor
             case "Transition":
                 toWorld = new Transition(lv);
                 break;
+            case "Menu":
+                toWorld = new Menu(lv);
+                break;
         }
         Greenfoot.setWorld(toWorld);
     }
 
     private void clearObjs(){
-        homeBut = null;
         scrnMover = null;
         key = null;
         door = null;
@@ -200,6 +204,4 @@ public class Level extends WorldwCursor
             player.escaped();
         }
     }
-
-    private Clickable backMainScrn = () -> leaveWorld("LvSelection");
 }
