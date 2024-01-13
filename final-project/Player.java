@@ -24,6 +24,7 @@ public class Player extends Gravitational
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
         this.keyUp = keyUp;
+        pushable = false;
 
         for(int i = 0; i < 4; i++){
             left[i] = new GreenfootImage("player/" + name + "/tile" + i + ".png");
@@ -119,10 +120,10 @@ public class Player extends Gravitational
         List<? extends Actor> list = getIntersectingObjects(c);
         if(list != null){
             for(int i = 0; i < list.size(); i++){
-                Actor temp = list.get(i);
+                GameObjects temp = (GameObjects) list.get(i);
                 int tempHeight = temp.getImage().getHeight()-pixelDifference;
                 if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ //this.height under other.topEdge && this.height ontop of other.bottomEdge
-                    if(willPush){
+                    if(temp.isPushable()){
                         setLocation(getX()-moveDirection*2, getY());
                         temp.setLocation(temp.getX()+moveDirection*2, temp.getY());
                     }else{
