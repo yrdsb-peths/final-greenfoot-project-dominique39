@@ -14,7 +14,7 @@ public class Gravitational extends GameObjects
 
     public Gravitational(){
         objWidth = getImage().getWidth()+28;
-        objHeight = getImage().getHeight()+48;
+        objHeight = getImage().getHeight();
     }
 
     public void act(){

@@ -125,7 +125,7 @@ public class Player extends Gravitational
                 if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ //this.height under other.topEdge && this.height ontop of other.bottomEdge
                     if(temp.isPushable()){
                         setLocation(getX()-moveDirection*2, getY());
-                        temp.setLocation(temp.getX()+moveDirection*2, temp.getY());
+                        temp.setLocation(temp.getX()+moveDirection*2, temp.getY()); 
                     }else{
                         setLocation(getX()-moveDirection*4, getY());
                     }

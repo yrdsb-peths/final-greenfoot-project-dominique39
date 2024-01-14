@@ -7,8 +7,8 @@ public class Floor extends Actionable
         pushable = false;
     }
     
-    public Floor(int width, int height, PressurePlate pressurePlate, int displaceX, int displaceY){
-        super(width, height, pressurePlate, displaceX, displaceY, "floor.png");
+    public Floor(int width, int height, PressurePlate pressurePlate, int displaceX, int displaceY, int moveSpeed){
+        super(width, height, pressurePlate, displaceX, displaceY, moveSpeed, "floor.png");
         pushable = false;
     }
 }

@@ -26,7 +26,7 @@ public class Level extends World
         super(1000, 900, 1, false);
         this.lv = lv;
         setPaintOrder(Player.class, Floor.class);
-        setActOrder(Player.class, Floor.class);
+        setActOrder(Player.class, Block.class, Floor.class);
 
         leftBoundary = new Door();
         addObject(leftBoundary,-200, 0);
@@ -58,8 +58,8 @@ public class Level extends World
         }catch (FileNotFoundException e) {
             System.out.println("File not loaded; \n    file not found");
             error = true;
-        }catch (InputMismatchException e) {
-            System.out.println("File not loaded; \n    incorrect format for object, size, or location");
+        }catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("File not loaded; \n    incorrect object format");
             error = true;
         }
     }
@@ -83,7 +83,7 @@ public class Level extends World
                 addObject(lasers.get(lasers.size()-1),data[0],data[1]);
                 break;
             case "block":
-                blocks.add(new Block());
+                blocks.add(new Block(data[0],data[1]));
                 addObject(blocks.get(blocks.size()-1),data[0],data[1]);
                 break;
             case "pressure_plate":
@@ -91,11 +91,11 @@ public class Level extends World
                 addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
                 break;
             case "-floor":
-                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5]));
+                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5], data[6]));
                 addObject(floors.get(floors.size()-1),data[0],data[1]);
                 break;
             case "-laser":
-                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5]));
+                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5], data[6]));
                 addObject(floors.get(floors.size()-1),data[0],data[1]);
                 break;
         }
