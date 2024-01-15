@@ -10,7 +10,7 @@ public class Menu extends WorldwCursor
         super();
         onLevel = lv;
         menuLabel = new Label("menu.png");
-        addObject(menuLabel, getWidth()/2, 100+(getHeight()-200)/(buttons.length+2));
+        addObject(menuLabel, getWidth()/2, 100+(getHeight()-200)/(buttons.length+3));
         
         buttons[0] = new Button(restart,"restart");
         buttons[1] = new Button(exit,"exit_level");
