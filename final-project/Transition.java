@@ -15,8 +15,6 @@ public class Transition extends World
 
     public void act(){
         Greenfoot.delay(30);
-        
-        label = null;
         Greenfoot.setWorld(new Level(lv));
     }
 }

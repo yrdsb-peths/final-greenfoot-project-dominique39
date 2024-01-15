@@ -19,17 +19,8 @@ public class Menu extends WorldwCursor
             addObject(buttons[i], getWidth()/2, 100+(getHeight()-200)/(buttons.length+2)*(i+2));
         }
     }
-    
-    public void act(){
-        if(Greenfoot.isKeyDown("escape")){
-            toWorld("restart");
-            Greenfoot.delay(10);
-            return;
-        }
-    }
 
     private void toWorld(String world){
-        buttons = null;
         switch(world){
             case "restart":
                 Greenfoot.setWorld(new Transition(onLevel));
