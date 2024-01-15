@@ -18,12 +18,12 @@ public class LvSelection extends WorldwCursor
         buttons[4] = new Button(toLv5,"lv5");
 
         for(int i = 0; i < 5; i++){
-            addObject(buttons[i], 100+(getWidth()-200)/(6)*(i+1), getHeight()/2);
+            addObject(buttons[i], 100+(getWidth()-200)/6*(i+1), getHeight()/2);
             
             //add passed background to passed levels
             if(passed[i]){
                 passedIndication.add(new Label("passed.png"));
-                addObject(passedIndication.get(passedIndication.size()-1),100+(getWidth()-200)/(6)*(i+1), getHeight()/2);
+                addObject(passedIndication.get(passedIndication.size()-1),100+(getWidth()-200)/6*(i+1), getHeight()/2);
             }
         }
     }
@@ -35,7 +35,7 @@ public class LvSelection extends WorldwCursor
     }
 
     public static void passed(int lv){
-        passed[lv+1] = true;
+        passed[lv-1] = true;
     }
 
     private void toWorld(int lv){
