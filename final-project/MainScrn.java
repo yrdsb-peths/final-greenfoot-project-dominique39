@@ -15,10 +15,10 @@ public class MainScrn extends WorldwCursor
         startButton = new Button(startGame,"start");
         addObject(startButton, getWidth()/2, getHeight()/3+(getHeight()/3*2)/4);    
         
-        instructionButton = new Button(toInstructions,"credit");
+        instructionButton = new Button(toInstructions,"instructions");
         addObject(instructionButton, getWidth()/2, getHeight()/3+(getHeight()/3*2)/4*2);
         
-        creditButton = new Button(toCredits,"instructions");
+        creditButton = new Button(toCredits,"credit");
         addObject(creditButton, getWidth()/2, getHeight()/3+(getHeight()/3*2)/4*3);
     }
     

@@ -12,12 +12,12 @@ public class Credits extends WorldwCursor
     }
 
     public void act(){
-        if(credit.getY() < getHeight()/3){
-            if(Greenfoot.isKeyDown("escape")){
-                Greenfoot.setWorld(new MainScrn());
-            }
-        }else{
+        if(credit.getY() > getHeight()/3){
             credit.setLocation(credit.getX(), credit.getY()-1);
+        }
+
+        if(Greenfoot.isKeyDown("escape")){
+            Greenfoot.setWorld(new MainScrn());
         }
     }
 }

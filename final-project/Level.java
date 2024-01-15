@@ -11,8 +11,8 @@ public class Level extends World
     private Door door;
     private Door leftBoundary;
     private Label pass_label;
+    private Player[] players = new Player[2];
     private ArrayList<Floor> floors = new ArrayList(0);
-    private ArrayList<Player> players = new ArrayList(0);
     private ArrayList<Laser> lasers = new ArrayList(0);
     private ArrayList<Block> blocks = new ArrayList(0);
     private ArrayList<PressurePlate> pressurePlates = new ArrayList(0);
@@ -34,11 +34,12 @@ public class Level extends World
         scrnMover = new ScreenMover();
         addObject(scrnMover, 0, 0);
 
-        players.add(new Player("p1","a","d","w"));
-        players.add(new Player("p2","left","right","up"));
+        players[0] = new Player("p1","a","d","w");
+        players[1] = new Player("p2","left","right","up");
 
-        addObject(players.get(0),getWidth()/10,getHeight()-170);
-        addObject(players.get(1),getWidth()/10*2,getHeight()-170);
+        for(int i = 0; i < players.length; i++){
+            addObject(players[i],getWidth()/10*(i+1),getHeight()-170);
+        }
 
         //load level
         try{
@@ -114,34 +115,33 @@ public class Level extends World
                 if(scrnMover.getX() > getWidth()/2 && door.getX() > getWidth()-100){
                     moveConst = (scrnMover.getX() - getWidth()/2)/10*-1;
                 }
-                
+
                 if(scrnMover.getX() < getWidth()/2 && leftBoundary.getX() < -200){
                     moveConst = (getWidth()/2 - scrnMover.getX())/10;
                 }
-                
+
                 for(int i = 0; i < gameObjects.size(); i++){
                     Actor temp = gameObjects.get(i);
                     temp.setLocation(temp.getX()+moveConst,temp.getY());
                 }
             }
-            
-            for(int i = 0; i < players.size(); i++){
-                if(players.get(i).isDead()){
+
+            for(int i = 0; i < players.length; i++){
+                if(players[i].isDead()){
                     leaveWorld("Transition");
                     return;
                 }
             }
-            
-            if(players.get(0).isEscaped() && players.get(1).isEscaped()){
+
+            if(players[0].isEscaped() && players[1].isEscaped()){
                 pass_label = new Label("level_cleared.png");
                 addObject(pass_label, door.getX()-1000, getHeight()/2);
                 won = true;
                 return;
             }
-            
+
             if(Greenfoot.isKeyDown("escape")){
                 leaveWorld("Menu");
-                Greenfoot.delay(10);
                 return;
             }
         }else{
@@ -149,6 +149,7 @@ public class Level extends World
                 pass_label.setLocation(pass_label.getX()+10,pass_label.getY());
             }else{
                 Greenfoot.delay(60*2);
+                LvSelection.passed(lv);
                 leaveWorld("LvSelection");
             }
         }
@@ -156,7 +157,6 @@ public class Level extends World
 
     private void leaveWorld(String worldName){
         World toWorld = null;
-        clearObjs();
         switch(worldName){
             case "LvSelection":
                 toWorld = new LvSelection();
@@ -169,19 +169,6 @@ public class Level extends World
                 break;
         }
         Greenfoot.setWorld(toWorld);
-    }
-
-    private void clearObjs(){
-        scrnMover = null;
-        key = null;
-        door = null;
-        leftBoundary = null;
-        pass_label = null;
-        players = null;
-        floors = null;
-        lasers = null;
-        blocks = null;
-        pressurePlates = null;
     }
 
     public void obtainKey(Player player){
