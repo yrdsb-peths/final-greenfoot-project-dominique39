@@ -30,7 +30,7 @@ public class Level extends World
     {
         super(1000, 900, 1, false);
         this.lv = lv;
-        setPaintOrder(Player.class, Floor.class);
+        setPaintOrder(Label.class, Player.class, Floor.class);
         setActOrder(Player.class, Block.class, Actionable.class);
 
         leftBoundary = new Door();
