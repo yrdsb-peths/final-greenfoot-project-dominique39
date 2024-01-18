@@ -108,7 +108,7 @@ public class Player extends Gravitational
     }
 
     //override the fall method in the superclass
-    private void fall(){
+    void fall(){
         canJump = false;
         //fall
         if(fallIndex < 40){
@@ -158,7 +158,7 @@ public class Player extends Gravitational
     }
 
     //override the vertical collision in the superclass
-    private void collisionY(Class c, boolean onGroundCollision){
+    void collisionY(Class c, boolean onGroundCollision){
         List<? extends Actor> list = getIntersectingObjects(c);
         if(list != null){
             for(int i = 0; i < list.size(); i++){
