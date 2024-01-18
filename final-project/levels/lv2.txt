@@ -7,7 +7,7 @@ block/500/750
 
 floor/2000/850/1300/100
 
-pressure_plate/2000/790
+pressure_plate/2000/790/0
 -floor/1400/500/100/30/620/0/2
 
 floor/1800/400/30/10
@@ -21,7 +21,7 @@ floor/3000/530/500/90
 
 block/3000/430
 
-pressure_plate/3100/475
+pressure_plate/3100/475/0
 -floor/2650/850/600/100/300/0/1
 
 laser/3000/890/500/30

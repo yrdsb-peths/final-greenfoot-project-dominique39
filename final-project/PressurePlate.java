@@ -4,6 +4,15 @@ import java.util.*;
 public class PressurePlate extends GameObjects
 {
     private boolean stepped;
+    private boolean hold;
+    
+    public PressurePlate(int hold){
+        if(hold == 1){
+            this.hold = true;
+        }else{
+            this.hold = false;
+        }
+    }
     
     public void act()
     {
@@ -21,5 +30,9 @@ public class PressurePlate extends GameObjects
 
     public boolean isStepped(){
         return stepped;
+    }
+    
+    public boolean isHold(){
+        return hold;
     }
 }

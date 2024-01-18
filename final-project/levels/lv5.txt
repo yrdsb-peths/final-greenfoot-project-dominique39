@@ -13,7 +13,7 @@ laser/900/517/120/35
 
 floor/900/900/100/30
 laser/900/820/300/30
-pressure_plate/900/875
+pressure_plate/900/875/1
 -laser/-15/450/30/900/4000/0/0
 
 floor/1060/500/200/10
@@ -34,26 +34,26 @@ laser/1625/900/150/50
 
 floor/2150/850/900/100
 
-pressure_plate/1750/790
+pressure_plate/1750/790/1
 block/1750/-200
 -floor/1750/-100/100/10/600/0/10
 
-pressure_plate/1900/790
+pressure_plate/1900/790/1
 block/1900/-200
 -floor/1900/-100/100/10/500/0/10
 
-pressure_plate/2050/790
+pressure_plate/2050/790/1
 block/2050/-200
 -floor/2050/-100/100/10/400/0/10
 
-pressure_plate/2200/790
+pressure_plate/2200/790/1
 block/2200/-200
 -floor/2200/-100/100/10/300/0/10
 
 floor/2900/505/700/10
 floor/2900/705/700/390
 
-pressure_plate/3000/490
+pressure_plate/3000/490/0
 -laser/3350/520/200/30/0/110/3
 
 laser/3240/217/20/35

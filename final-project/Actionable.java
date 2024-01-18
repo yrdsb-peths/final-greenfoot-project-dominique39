@@ -52,7 +52,7 @@ public class Actionable extends GameObjects
                         setLocation(getX(), getY()-moveSpeed);
                     }
                 }
-            }else{
+            }else if(!pressurePlate.isHold()){
                 if(movedX != 0){
                     if(movedX > 0){
                         movedX--;
