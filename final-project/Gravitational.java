@@ -36,7 +36,7 @@ public class Gravitational extends GameObjects
     }
 
     //replicate earth's gravity
-    private void fall(){
+    void fall(){
         if(fallIndex < 40){
             fallIndex++;
         }
