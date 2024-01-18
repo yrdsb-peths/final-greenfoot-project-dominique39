@@ -17,6 +17,5 @@ public class ScreenMover extends Actor
         if(players.size() != 0){
             setLocation(totalX/players.size(), getY());
         }
-        new GreenfootSound("bgm.wav").play();
     }
 }
