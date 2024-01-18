@@ -6,6 +6,12 @@ public class Button extends Actor
     private GreenfootImage buttonImage;
     private GreenfootImage hoverImage;
     
+    /**
+     * Creates a button
+     *
+     * @param button a clickable
+     * @param imgName the image name of the button
+     */
     public Button(Clickable button, String imgName){
         this.button = button;
         this.buttonImage = new GreenfootImage("images/buttons/"+imgName+".png");
@@ -13,6 +19,10 @@ public class Button extends Actor
         setImage(this.buttonImage);
     }
     
+    /**
+     * button animation; also triggers the clickable interface when the button is pressed
+     *
+     */
     public void act()
     {
         if(this.isTouching(Cursor.class)){

@@ -6,6 +6,12 @@ public class Block extends Gravitational
     int origX;
     int origY;
 
+    /**
+     * Creates a block
+     *
+     * @param origX the original X location of the block
+     * @param origY the original Y location of the block
+     */
     public Block(int origX, int origY){
         GreenfootImage img = new GreenfootImage("objects/block.png");
         setImage(img);
@@ -14,6 +20,10 @@ public class Block extends Gravitational
         pushable = true;
     }
 
+    /**
+     * horizontal movement and collisions; check pressing pressureplate from superclass act method; vertical movement from the superclass act method
+     *
+     */
     public void act(){
         collisionX(Player.class);
         collisionX(Floor.class);
@@ -25,7 +35,8 @@ public class Block extends Gravitational
         }
     }
 
-    void collisionX(Class c){
+    //the horizontal collision
+    private void collisionX(Class c){
         for(int i = -1; i < 2; i += 2){
             GameObjects temp = (GameObjects) getOneObjectAtOffset(objWidth+i+4, 0, c);
             if(temp != null){

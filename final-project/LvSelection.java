@@ -7,6 +7,10 @@ public class LvSelection extends WorldwCursor
     private List<Label> passedIndication = new ArrayList(0);
     private static boolean[] passed = {false, false, false, false, false};
 
+    /**
+     * Create a Level Selection world
+     *
+     */
     public LvSelection(){    
         super();
         setPaintOrder(Button.class);
@@ -27,6 +31,11 @@ public class LvSelection extends WorldwCursor
         }
     }
 
+    /**
+     * set which level to be accomplished by the user
+     *
+     * @param lv the level that is accomplished
+     */
     public static void passed(int lv){
         passed[lv-1] = true;
     }

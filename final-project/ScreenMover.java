@@ -3,6 +3,10 @@ import java.util.*;
 
 public class ScreenMover extends Actor
 {
+    /**
+     * center actor in the screen
+     *
+     */
     public void act()
     {
         List<Player> players = getObjectsInRange(10000, Player.class);

@@ -20,7 +20,12 @@ public class Level extends World
     private int lv;
     private boolean won = false;
     private boolean error = false;
-
+    
+    /**
+     * Constructs a new level, level content is based on the the txt file
+     * 
+     * @param lv    determines which txt file to be read
+     */
     public Level(int lv)
     {
         super(1000, 900, 1, false);
@@ -97,7 +102,7 @@ public class Level extends World
                 }
                 break;
             case "pressure_plate":
-                pressurePlates.add(new PressurePlate());
+                pressurePlates.add(new PressurePlate(data[2]));
                 addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
                 break;
             case "-floor":
@@ -110,7 +115,11 @@ public class Level extends World
                 break;
         }
     }
-
+    
+    /**
+     * move screen objects with screen mover actor; check win conditions; check if menu is triggered; actions to be done after won
+     *
+     */
     public void act(){
         if(error){
             leaveWorld("LvSelection");
@@ -184,15 +193,30 @@ public class Level extends World
         Greenfoot.setWorld(toWorld);
     }
 
+    /**
+     * set key to 'obtained'
+     *
+     * @param player    specifies which player obtains the key
+     */
     public void obtainKey(Player player){
         key.setPlayer(player);
         key.obtained();
     }
 
+    /**
+     * set pressure plate to 'stepped'
+     *
+     * @param pressurePlate     specifies the pressure plate being stepped
+     */
     public void pressPlate(PressurePlate pressurePlate){
         pressurePlate.stepped();
     }
 
+    /**
+     * let player enter the door, key is needed when the door is locked
+     *
+     * @param player    specific player needed for checking key's existance
+     */
     public void goInDoor(Player player){
         if(door.isUnlocked()){
             removeObject(player);

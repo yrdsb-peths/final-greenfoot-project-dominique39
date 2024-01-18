@@ -12,11 +12,19 @@ public class Gravitational extends GameObjects
     int jumpHeight = 0;
     int fallIndex = 0;
 
+    /**
+     * Create a object with gravity
+     *
+     */
     public Gravitational(){
         objWidth = getImage().getWidth()+28;
         objHeight = getImage().getHeight();
     }
 
+    /**
+     * check if pressure plate is stepped; vertical movement
+     *
+     */
     public void act(){
         inWorld = (Level) getWorld();
 
@@ -27,7 +35,8 @@ public class Gravitational extends GameObjects
         fall();
     }
 
-    void fall(){
+    //replicate earth's gravity
+    private void fall(){
         if(fallIndex < 40){
             fallIndex++;
         }
@@ -37,6 +46,7 @@ public class Gravitational extends GameObjects
         collisionY(Gravitational.class);
     }
 
+    //the vertical collision
     void collisionY(Class c){
         List<? extends Actor> list = getIntersectingObjects(c);
         if(list != null){

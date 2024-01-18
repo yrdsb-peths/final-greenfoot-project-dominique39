@@ -6,6 +6,10 @@ public class MainScrn extends WorldwCursor
     private Button instructionButton;
     private Button creditButton;
 
+    /**
+     * Create a Main Screen World
+     *
+     */
     public MainScrn()
     {
         super();

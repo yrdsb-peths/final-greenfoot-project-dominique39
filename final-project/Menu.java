@@ -6,7 +6,12 @@ public class Menu extends WorldwCursor
     private Button[] buttons = new Button[3];
     private Label menuLabel;
 
-    public Menu(int lv){    
+    /**
+     * Create a Menu world
+     *
+     * @param lv holds the previous level user was on
+     */
+    public Menu(int lv){
         super();
         onLevel = lv;
         menuLabel = new Label("menu.png");
