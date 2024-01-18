@@ -19,7 +19,6 @@ public class LvSelection extends WorldwCursor
 
         for(int i = 0; i < 5; i++){
             addObject(buttons[i], 100+(getWidth()-200)/6*(i+1), getHeight()/2);
-            
             //add passed background to passed levels
             if(passed[i]){
                 passedIndication.add(new Label("passed.png"));
@@ -28,21 +27,11 @@ public class LvSelection extends WorldwCursor
         }
     }
 
-    public void act(){
-        if(passed[0] && passed[1] && passed[2] && passed[3] && passed[4]){
-            toWorld(10);
-        }
-    }
-
     public static void passed(int lv){
         passed[lv-1] = true;
     }
 
     private void toWorld(int lv){
-        if(lv == 10){
-            Greenfoot.setWorld(new EndGame());
-            return;
-        }
         Greenfoot.setWorld(new Transition(lv));
     }
 

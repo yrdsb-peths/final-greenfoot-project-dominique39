@@ -17,7 +17,7 @@ public class Menu extends WorldwCursor
         buttons[2] = new Button(quit,"back_main_screen");
 
         for(int i = 0; i < buttons.length; i++){
-            addObject(buttons[i], getWidth()/2, 100+(getHeight()-200)/(buttons.length+2)*(i+2));
+            addObject(buttons[i], getWidth()/2, 100+(getHeight()-200)/6*(i+3));
         }
     }
 

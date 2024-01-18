@@ -11,7 +11,7 @@ public class Level extends World
     private Door door;
     private Door leftBoundary;
     private Label pass_label;
-    private Player[] players = new Player[2];
+    private ArrayList<Player> players = new ArrayList(0);
     private ArrayList<Floor> floors = new ArrayList(0);
     private ArrayList<Laser> lasers = new ArrayList(0);
     private ArrayList<Block> blocks = new ArrayList(0);
@@ -26,7 +26,7 @@ public class Level extends World
         super(1000, 900, 1, false);
         this.lv = lv;
         setPaintOrder(Player.class, Floor.class);
-        setActOrder(Player.class, Block.class, Floor.class);
+        setActOrder(Player.class, Block.class, Actionable.class);
 
         leftBoundary = new Door();
         addObject(leftBoundary,-200, 0);
@@ -34,11 +34,11 @@ public class Level extends World
         scrnMover = new ScreenMover();
         addObject(scrnMover, 0, 0);
 
-        players[0] = new Player("p1","a","d","w");
-        players[1] = new Player("p2","left","right","up");
+        players.add(new Player("p1","a","d","w"));
+        players.add(new Player("p2","left","right","up"));
 
-        for(int i = 0; i < players.length; i++){
-            addObject(players[i],getWidth()/10*(i+1),getHeight()-170);
+        for(int i = 0; i < players.size(); i++){
+            addObject(players.get(i),getWidth()/10*(i+1),getHeight()-170);
         }
 
         //load level
@@ -54,6 +54,10 @@ public class Level extends World
                 }
 
                 loadObj(data[0],intData); //where/size
+            }
+            if(door == null || key == null){
+                System.out.println("File not loaded; \n    crucial object missing");
+                error = true;
             }
             lvFile.close();
         }catch (FileNotFoundException e) {
@@ -87,6 +91,11 @@ public class Level extends World
                 blocks.add(new Block(data[0],data[1]));
                 addObject(blocks.get(blocks.size()-1),data[0],data[1]);
                 break;
+            case "players":
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).setLocation(data[0]+110*i, data[1]);
+                }
+                break;
             case "pressure_plate":
                 pressurePlates.add(new PressurePlate());
                 addObject(pressurePlates.get(pressurePlates.size()-1),data[0],data[1]);
@@ -96,8 +105,8 @@ public class Level extends World
                 addObject(floors.get(floors.size()-1),data[0],data[1]);
                 break;
             case "-laser":
-                floors.add(new Floor(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5], data[6]));
-                addObject(floors.get(floors.size()-1),data[0],data[1]);
+                lasers.add(new Laser(data[2], data[3], pressurePlates.get(pressurePlates.size()-1), data[4], data[5], data[6]));
+                addObject(lasers.get(lasers.size()-1),data[0],data[1]);
                 break;
         }
     }
@@ -126,14 +135,18 @@ public class Level extends World
                 }
             }
 
-            for(int i = 0; i < players.length; i++){
-                if(players[i].isDead()){
+            boolean allEscaped = true;
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).isDead()){
                     leaveWorld("Transition");
                     return;
                 }
+                if(!players.get(i).isEscaped()){
+                    allEscaped = false;
+                }
             }
-
-            if(players[0].isEscaped() && players[1].isEscaped()){
+            
+            if(allEscaped){
                 pass_label = new Label("level_cleared.png");
                 addObject(pass_label, door.getX()-1000, getHeight()/2);
                 won = true;
