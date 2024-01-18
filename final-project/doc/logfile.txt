@@ -13,23 +13,40 @@ C:\Program Files\Greenfoot\jdk\bin\javadoc.exe
 -source
 17
 -classpath
-C:\Program Files\Greenfoot\lib\greenfoot.jar;C:\Program Files\Greenfoot\lib\javafx-base-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-base-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-controls-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-controls-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-fxml-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-graphics-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-graphics-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-media-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-media-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-swing-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-web-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\junit-4.12.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-api-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-engine-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-params-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-commons-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-engine-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-launcher-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-suite-api-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-vintage-engine-5.5.2.jar;C:\Program Files\Greenfoot\lib\hamcrest-core-1.3.jar;C:\Program Files\Greenfoot\lib\opentest4j-1.2.0.jar;C:\Program Files\Greenfoot\lib\bluej.jar;C:\Program Files\Greenfoot\lib\classgraph-4.8.90.jar;C:\Program Files\Greenfoot\lib\diffutils-1.2.1.jar;C:\Program Files\Greenfoot\lib\commons-logging-1.2.jar;C:\Program Files\Greenfoot\lib\jl1.0.1.jar;C:\Program Files\Greenfoot\lib\opencsv-2.3.jar;C:\Program Files\Greenfoot\lib\opencsv-2.4.jar;C:\Program Files\Greenfoot\lib\xom-1.3.7.jar;C:\Program Files\Greenfoot\lib\lang-stride.jar;C:\Program Files\Greenfoot\lib\nsmenufx-2.1.8.jar;C:\Program Files\Greenfoot\lib\wellbehavedfx-0.3.3.jar;C:\Program Files\Greenfoot\lib\guava-17.0.jar;C:\Program Files\Greenfoot\lib\httpclient-4.3.6.jar;C:\Program Files\Greenfoot\lib\httpcore-4.3.3.jar;C:\Program Files\Greenfoot\lib\httpmime-4.1.1.jar;C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico
+C:\Program Files\Greenfoot\lib\greenfoot.jar;C:\Program Files\Greenfoot\lib\javafx-base-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-base-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-controls-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-controls-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-fxml-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-graphics-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-graphics-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-media-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-media-20.0.1.jar;C:\Program Files\Greenfoot\lib\javafx-swing-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\javafx-web-20.0.1-win.jar;C:\Program Files\Greenfoot\lib\junit-4.12.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-api-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-engine-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-jupiter-params-5.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-commons-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-engine-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-launcher-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-platform-suite-api-1.5.2.jar;C:\Program Files\Greenfoot\lib\junit-vintage-engine-5.5.2.jar;C:\Program Files\Greenfoot\lib\hamcrest-core-1.3.jar;C:\Program Files\Greenfoot\lib\opentest4j-1.2.0.jar;C:\Program Files\Greenfoot\lib\bluej.jar;C:\Program Files\Greenfoot\lib\classgraph-4.8.90.jar;C:\Program Files\Greenfoot\lib\diffutils-1.2.1.jar;C:\Program Files\Greenfoot\lib\commons-logging-1.2.jar;C:\Program Files\Greenfoot\lib\jl1.0.1.jar;C:\Program Files\Greenfoot\lib\opencsv-2.3.jar;C:\Program Files\Greenfoot\lib\opencsv-2.4.jar;C:\Program Files\Greenfoot\lib\xom-1.3.7.jar;C:\Program Files\Greenfoot\lib\lang-stride.jar;C:\Program Files\Greenfoot\lib\nsmenufx-2.1.8.jar;C:\Program Files\Greenfoot\lib\wellbehavedfx-0.3.3.jar;C:\Program Files\Greenfoot\lib\guava-17.0.jar;C:\Program Files\Greenfoot\lib\httpclient-4.3.6.jar;C:\Program Files\Greenfoot\lib\httpcore-4.3.3.jar;C:\Program Files\Greenfoot\lib\httpmime-4.1.1.jar;C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project
 -d
-C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\doc
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\doc
 -encoding
 UTF-8
 -charset
 UTF-8
-C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\Players.java
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java
 <---- end of javadoc command ---->
-Loading source file C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\Players.java...
+Loading source file C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java...
 Constructing Javadoc information...
 warning: unknown enum constant Tag.Any
   reason: class file for threadchecker.Tag not found
 warning: unknown enum constant Tag.Any
+warning: unknown enum constant Tag.Any
+warning: unknown enum constant Tag.Any
 Standard Doclet version 17.0.4.1+1
 Building tree for all the packages and classes...
-Generating C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\doc\Players.html...
-Generating C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\doc\package-summary.html...
-Generating C:\Users\Domin\Downloads\hw\CA Peths\Computer Science\Pico\doc\index.html...
-2 warnings
+Generating C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\doc\Player.html...
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java:47: warning: invalid input: '&'
+     * check if pressure plate is stepped from the superclass; horizontal movement & collision; vertical movement & collision from the superclass but overrided; check if player obtains key; check if player enter the door; check if player dies by touching the laser
+                                                                                   ^
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java:47: warning: invalid input: '&'
+     * check if pressure plate is stepped from the superclass; horizontal movement & collision; vertical movement & collision from the superclass but overrided; check if player obtains key; check if player enter the door; check if player dies by touching the laser
+                                                                                                                  ^
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java:30: warning: invalid input: '&'
+     * @param keyUp the key that move the player up & let the player enter the door
+                                                    ^
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java:47: warning: invalid input: '&'
+     * check if pressure plate is stepped from the superclass; horizontal movement & collision; vertical movement & collision from the superclass but overrided; check if player obtains key; check if player enter the door; check if player dies by touching the laser
+                                                                                   ^
+C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\Player.java:47: warning: invalid input: '&'
+     * check if pressure plate is stepped from the superclass; horizontal movement & collision; vertical movement & collision from the superclass but overrided; check if player obtains key; check if player enter the door; check if player dies by touching the laser
+                                                                                                                  ^
+Generating C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\doc\package-summary.html...
+Generating C:\Users\Domin\OneDrive\Documents\GitHub\final-greenfoot-project-dominique39\final-project\doc\index.html...
+9 warnings

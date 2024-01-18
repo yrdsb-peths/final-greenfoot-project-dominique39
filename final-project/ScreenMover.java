@@ -3,6 +3,10 @@ import java.util.*;
 
 public class ScreenMover extends Actor
 {
+    /**
+     * center actor in the screen
+     *
+     */
     public void act()
     {
         List<Player> players = getObjectsInRange(10000, Player.class);
@@ -13,5 +17,6 @@ public class ScreenMover extends Actor
         if(players.size() != 0){
             setLocation(totalX/players.size(), getY());
         }
+        new GreenfootSound("bgm.wav").play();
     }
 }

@@ -1,69 +1,77 @@
 import greenfoot.*;
 import java.util.*;
 
-public class Player extends Obstructables
+public class Player extends Gravitational
 {
-    private int playerWidth;
-    private int playerHeight;
     private boolean escaped = false;
     private boolean dead = false;
+    private boolean cheating = false;
 
     //move
     private String keyLeft;
     private String keyRight;
     private String keyUp;
+    private int moveSpeed = 4;
     private int jumpHeight = 19;
-    private int fallIndex = 0;
+    private boolean canJump;
 
     //animate
     private int facing;
     private int imageIndex = 0;
     private GreenfootImage[] left = new GreenfootImage[4];
     private GreenfootImage[] right = new GreenfootImage[4];
-    
+
+    /**
+     * Create a new player
+     *
+     * @param name the name of the player
+     * @param keyLeft the key that move the player to the left
+     * @param keyRight the key that move the player to the right
+     * @param keyUp the key that move the player up & let the player enter the door
+     */
     public Player(String name, String keyLeft, String keyRight, String keyUp){
+        super();
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
         this.keyUp = keyUp;
+        pushable = false;
 
         for(int i = 0; i < 4; i++){
             left[i] = new GreenfootImage("player/" + name + "/tile" + i + ".png");
             right[i] = new GreenfootImage("player/" + name + "/tile" + i + ".png");
             right[i].mirrorHorizontally();
         }
-
-        playerWidth = getImage().getWidth()+30;
-        playerHeight = getImage().getHeight()+30;
     }
 
+    /**
+     * check if pressure plate is stepped from the superclass; horizontal movement & collision; vertical movement & collision from the superclass but overrided; check if player obtains key; check if player enter the door; check if player dies by touching the laser
+     *
+     */
     public void act()
     {
-        Level world = (Level) getWorld();
-        moveY();
+        super.act();
         moveX();
 
         //obtain key
         if(isTouching(Key.class)){
-            world.obtainKey(this);
+            inWorld.obtainKey(this);
         }
-        
+
         //touch laser
         if(isTouching(Laser.class)){
+            new GreenfootSound("fail.wav").play();
             dead = true;
         }
-        
-        if(getIntersectingObjects(PressurePlate.class).size() > 0){
-            world.pressPlate(getIntersectingObjects(PressurePlate.class).get(0));
-        }
-        
+
         //leave level
         if(isTouching(Door.class) && Greenfoot.isKeyDown(keyUp)){
-            world.goInDoor(this);
+            inWorld.goInDoor(this);
         }
     }
 
+    //horizontal movement
     private void moveX(){
-        int moveDirection = 0;
+        moveDirection = 0;
         boolean isBothPressed = (Greenfoot.isKeyDown(keyLeft) == Greenfoot.isKeyDown(keyRight));
 
         if(isBothPressed){
@@ -87,72 +95,84 @@ public class Player extends Obstructables
         }
 
         //move player accordingly
-        setLocation(getX()+(moveDirection*4), getY());
+        setLocation(getX()+(moveDirection*moveSpeed), getY());
         //revert to original position if character at world edge
-        if(getX() <= playerWidth || getX() >= 1000-playerWidth){
-            setLocation(getX()-moveDirection*4, getY());
+        if(getX() < objWidth || getX() > inWorld.getWidth() - objWidth){
+            setLocation(getX()-moveDirection*moveSpeed, getY());
         }
 
-        //collision
-        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
-        if(r != null){
-            for(int i = 0; i < r.size(); i++){
-                Actor temp = r.get(i);
-                int tempHeight = temp.getImage().getHeight()-5;
+        //collision & whether the class is pushable by the player
+        collisionX(Player.class, 10, false);
+        collisionX(Floor.class, 0, false);
+        collisionX(Block.class, 0, true);
+    }
+
+    //override the fall method in the superclass
+    private void fall(){
+        canJump = false;
+        //fall
+        if(fallIndex < 40){
+            fallIndex++;
+        }
+        setLocation(getX(), getY()+fallIndex);
+
+        //return to the top of the screen if player fell out the world
+        if(getY() > inWorld.getHeight() + objHeight){
+            setLocation(getX()-300, -objHeight);
+            if(getX() < objWidth){
+                setLocation(objWidth, getY());
+            }
+        }
+
+        //onground collision
+        collisionY(Floor.class, true);
+        collisionY(Gravitational.class, true);
+
+        //jumping
+        if(Greenfoot.isKeyDown(keyUp) && canJump){
+            fallIndex = -jumpHeight;
+        }
+
+        //head hitting collision
+        collisionY(Floor.class, false);
+        collisionY(Gravitational.class, false);
+    }
+
+    //horizontal collision
+    private void collisionX(Class c, int pixelDifference, boolean willPush){
+        List<? extends Actor> list = getIntersectingObjects(c);
+        if(list != null){
+            for(int i = 0; i < list.size(); i++){
+                GameObjects temp = (GameObjects) list.get(i);
+                int tempHeight = temp.getImage().getHeight()-pixelDifference;
                 if(getY() >= temp.getY()-tempHeight && getY() <= temp.getY()+tempHeight){ //this.height under other.topEdge && this.height ontop of other.bottomEdge
-                    setLocation(getX()-moveDirection*4, getY());
+                    if(temp.isPushable()){
+                        setLocation(getX()-moveDirection*4, getY());
+                        temp.setLocation(temp.getX()+moveDirection*2, temp.getY()); 
+                    }else{
+                        setLocation(getX()-moveDirection*4, getY());
+                    }
                 }
             }
         }
     }
 
-    private void moveY(){
-        boolean canJump = false;
-
-        //gradual falling with limits
-        if(fallIndex < 40){
-            fallIndex++;
-        }
-
-        if(getY() > playerHeight/2+900){
-            //back to top of the screen
-            setLocation(getX()-200, -playerHeight/2);
-            if(getX() < playerWidth){
-                setLocation(playerWidth, getY());
-            }
-        }else{
-            //fall
-            setLocation(getX(), getY()+fallIndex);
-        }
-
-        //standing collision
-        List<Obstructables> r = getIntersectingObjects(Obstructables.class);
-        if(r != null){
-            for(int i = 0; i < r.size(); i++){
-                Actor temp = r.get(i);
-                if(getY() < temp.getY()){ //this.y lower than other.y
-                    setLocation(getX(), getY()-fallIndex);
-                    canJump = true;
-                    fallIndex = 0;
-                }else{
-                    if(!canJump && fallIndex < 0){
+    //override the vertical collision in the superclass
+    private void collisionY(Class c, boolean onGroundCollision){
+        List<? extends Actor> list = getIntersectingObjects(c);
+        if(list != null){
+            for(int i = 0; i < list.size(); i++){
+                Actor temp = list.get(i);
+                if(onGroundCollision){
+                    if(getY() < temp.getY()){ //this.y lower than other.y
+                        setLocation(getX(), getY()-fallIndex); //return to last position
+                        canJump = true;
+                        fallIndex = 0;
+                    }else if(fallIndex < 0){
+                        canJump = false;
                         fallIndex += fallIndex*-2;
                     }
-                    canJump = false;
-                }
-            }
-        }
-
-        //check jumping
-        if(Greenfoot.isKeyDown(keyUp) && canJump){
-            fallIndex = -jumpHeight;
-        }
-        
-        r = getIntersectingObjects(Obstructables.class);
-        if(r != null){
-            for(int i = 0; i < r.size(); i++){
-                Actor temp = r.get(i);
-                if(getY() > temp.getY()){
+                }else if(getY() > temp.getY()){
                     setLocation(getX(), getY()+fallIndex);
                     canJump = false;
                 }
@@ -173,19 +193,38 @@ public class Player extends Obstructables
             setImage(right[imageIndex/10]);
         }
     }
-    
+
+    /**
+     * return which side is the player facing
+     *
+     * @return the side is the player is facing
+     */
     public int getFacing(){
         return facing;
     }
-    
+
+    /**
+     * return if the player has escaped
+     *
+     * @return if the player has escaped
+     */
     public boolean isEscaped(){
         return escaped;
     }
-    
+
+    /**
+     * set the player as 'escaped'
+     *
+     */
     public void escaped(){
         escaped = true;
     }
-    
+
+    /**
+     * return if the player is dead
+     *
+     * @return if the player is dead
+     */
     public boolean isDead(){
         return dead;
     }

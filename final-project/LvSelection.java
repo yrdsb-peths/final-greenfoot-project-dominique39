@@ -3,33 +3,50 @@ import java.util.*;
 
 public class LvSelection extends WorldwCursor
 {
-    private int numLevels = 5;
+    private Button[] buttons = new Button[5];
+    private List<Label> passedIndication = new ArrayList(0);
+    private static boolean[] passed = {false, false, false, false, false};
 
-    private List<Button> lvButtons = new ArrayList(numLevels);
-
-    public LvSelection()
-    {    
+    /**
+     * Create a Level Selection world
+     *
+     */
+    public LvSelection(){    
         super();
+        setPaintOrder(Button.class);
 
-        lvButtons.add(new Button(toLv1,"lv1"));
-        lvButtons.add(new Button(toLv2,"lv2"));
-        lvButtons.add(new Button(toLv3,"lv3"));
-        lvButtons.add(new Button(toLv4,"lv4"));
-        lvButtons.add(new Button(toLv5,"lv5"));
+        buttons[0] = new Button(toLv1,"lv1");
+        buttons[1] = new Button(toLv2,"lv2");
+        buttons[2] = new Button(toLv3,"lv3");
+        buttons[3] = new Button(toLv4,"lv4");
+        buttons[4] = new Button(toLv5,"lv5");
 
-        for(int i = 0; i < numLevels; i++){
-            addObject(lvButtons.get(i), 100+(getWidth()-200)/(numLevels+1)*(i+1), getHeight()/2);
+        for(int i = 0; i < 5; i++){
+            addObject(buttons[i], 100+(getWidth()-200)/6*(i+1), getHeight()/2);
+            //add passed background to passed levels
+            if(passed[i]){
+                passedIndication.add(new Label("passed.png"));
+                addObject(passedIndication.get(passedIndication.size()-1),100+(getWidth()-200)/6*(i+1), getHeight()/2);
+            }
         }
     }
 
-    private void toLv(int lv){
-        lvButtons = null;
+    /**
+     * set which level to be accomplished by the user
+     *
+     * @param lv the level that is accomplished
+     */
+    public static void passed(int lv){
+        passed[lv-1] = true;
+    }
+
+    private void toWorld(int lv){
         Greenfoot.setWorld(new Transition(lv));
     }
 
-    private Clickable toLv1 = () -> toLv(1);
-    private Clickable toLv2 = () -> toLv(2);
-    private Clickable toLv3 = () -> toLv(3);
-    private Clickable toLv4 = () -> toLv(4);
-    private Clickable toLv5 = () -> toLv(5);
+    private Clickable toLv1 = () -> toWorld(1);
+    private Clickable toLv2 = () -> toWorld(2);
+    private Clickable toLv3 = () -> toWorld(3);
+    private Clickable toLv4 = () -> toWorld(4);
+    private Clickable toLv5 = () -> toWorld(5);
 }
